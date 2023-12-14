@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Moonpig.PostOffice.Infrastructure.BusinessLogic;
+using Moonpig.PostOffice.Infrastructure.DataAccess;
+using Moq;
+using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -6,6 +9,13 @@ namespace Moonpig.PostOffice.Tests
 {
     public class PostOfficeTests
     {
+        private readonly Mock<IOrderQuery> _orderQueryMock;
+
+        public PostOfficeTests()
+        {
+            _orderQueryMock = new Mock<IOrderQuery>();
+        }
+
         [Fact]
         public void OneProductWithLeadTimeOfOneDay()
         {
