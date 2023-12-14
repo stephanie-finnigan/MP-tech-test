@@ -19,7 +19,7 @@ namespace Moonpig.PostOffice.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<DespatchDateResponseDto> Get([FromBody] DespatchDateRequestDto request)
+        public async Task<OrderResponseDto> Get([FromBody] OrderRequestDto request)
         {
             return await _despatchLogic.GetDespatchDateAsync(request);
         }

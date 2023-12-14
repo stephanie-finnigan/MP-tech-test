@@ -5,7 +5,7 @@ namespace Moonpig.PostOffice.Infrastructure.BusinessLogic
 {
     public interface IDespatchLogic
     {
-        Task<DespatchDateResponseDto> GetDespatchDateAsync(DespatchDateRequestDto request);
+        Task<OrderResponseDto> GetDespatchDateAsync(OrderRequestDto request);
     }
 
     public class DespatchLogic : IDespatchLogic
@@ -17,9 +17,10 @@ namespace Moonpig.PostOffice.Infrastructure.BusinessLogic
             _orderQuery = orderQuery;
         }
 
-        public async Task<DespatchDateResponseDto> GetDespatchDateAsync(DespatchDateRequestDto request)
+        public async Task<OrderResponseDto> GetDespatchDateAsync(OrderRequestDto request)
         {
             var _mlt = request.OrderDate; // max lead time
+            
             foreach (var id in request.ProductIds)
             {
                 var lt = await _orderQuery.GetOrderSupplierLeadTime(id);
@@ -28,14 +29,19 @@ namespace Moonpig.PostOffice.Infrastructure.BusinessLogic
                     _mlt = request.OrderDate.AddDays(lt);
             }
 
-            if (_mlt.DayOfWeek == DayOfWeek.Saturday)
+            var result = GetMltDate(_mlt);
+
+            return new OrderResponseDto { Date = result };
+        }
+
+        private static DateTime GetMltDate(DateTime mlt)
+        {
+            return mlt.DayOfWeek switch
             {
-                return new DespatchDateResponseDto { Date = _mlt.AddDays(2) };
-            }
-            else if (_mlt.DayOfWeek == DayOfWeek.Sunday) 
-                return new DespatchDateResponseDto { Date = _mlt.AddDays(1) };
-            else 
-                return new DespatchDateResponseDto { Date = _mlt };
+                DayOfWeek.Saturday => mlt.AddDays(2),
+                DayOfWeek.Sunday => mlt.AddDays(1),
+                _ => mlt,
+            };
         }
     }
 }

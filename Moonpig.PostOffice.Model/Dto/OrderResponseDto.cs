@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class DespatchDateResponseDto : ErrorResponseDto
+    public class OrderResponseDto : ErrorResponseDto
     {
         public DateTime Date { get; set; }
     }

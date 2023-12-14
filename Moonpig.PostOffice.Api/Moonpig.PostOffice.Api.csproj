@@ -4,4 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Moonpig.PostOffice.Infrastructure\Moonpig.PostOffice.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

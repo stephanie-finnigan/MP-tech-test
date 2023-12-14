@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Moonpig.PostOffice.Data\Moonpig.PostOffice.Data.csproj" />
     <ProjectReference Include="..\Moonpig.PostOffice.Model\Moonpig.PostOffice.Model.csproj" />
   </ItemGroup>
 
