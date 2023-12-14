@@ -1,8 +1,9 @@
-﻿namespace Moonpig.PostOffice.Data
-{
-    using System.Linq;
-    using System.Collections.Generic;
+﻿using System.Linq;
+using System.Collections.Generic;
+using Moonpig.PostOffice.Data.Entities;
 
+namespace Moonpig.PostOffice.Data
+{
     public class DbContext : IDbContext
     {
         public IQueryable<Supplier> Suppliers
