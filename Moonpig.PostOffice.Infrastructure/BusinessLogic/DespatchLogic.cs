@@ -1,4 +1,5 @@
-﻿using Moonpig.PostOffice.Model.Dto;
+﻿using Moonpig.PostOffice.Infrastructure.DataAccess;
+using Moonpig.PostOffice.Model.Dto;
 
 namespace Moonpig.PostOffice.Infrastructure.BusinessLogic
 {
@@ -9,19 +10,24 @@ namespace Moonpig.PostOffice.Infrastructure.BusinessLogic
 
     public class DespatchLogic : IDespatchLogic
     {
+        private readonly IOrderQuery _orderQuery;
 
+        public DespatchLogic(IOrderQuery orderQuery)
+        {
+            _orderQuery = orderQuery;
+        }
 
         public async Task<DespatchDateResponseDto> GetDespatchDateAsync(DespatchDateRequestDto request)
         {
             var _mlt = request.OrderDate; // max lead time
-            foreach (var ID in request.ProductIds)
+            foreach (var id in request.ProductIds)
             {
-                DbContext dbContext = new DbContext();
-                var s = dbContext.Products.Single(x => x.ProductId == ID).SupplierId;
-                var lt = dbContext.Suppliers.Single(x => x.SupplierId == s).LeadTime;
+                var lt = await _orderQuery.GetOrderSupplierLeadTime(id);
+
                 if (request.OrderDate.AddDays(lt) > _mlt)
                     _mlt = request.OrderDate.AddDays(lt);
             }
+
             if (_mlt.DayOfWeek == DayOfWeek.Saturday)
             {
                 return new DespatchDateResponseDto { Date = _mlt.AddDays(2) };
