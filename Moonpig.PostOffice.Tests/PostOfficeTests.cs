@@ -1,9 +1,11 @@
-﻿using Moonpig.PostOffice.Infrastructure.BusinessLogic;
+﻿using FluentAssertions;
+using Moonpig.PostOffice.Infrastructure.BusinessLogic;
 using Moonpig.PostOffice.Infrastructure.DataAccess;
 using Moonpig.PostOffice.Model.Dto;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Moonpig.PostOffice.Tests
@@ -22,7 +24,7 @@ namespace Moonpig.PostOffice.Tests
         }
 
         [Fact]
-        public void OneProductWithLeadTimeOfOneDay()
+        public async Task OneProductWithLeadTimeOfOneDay()
         {
             _requestDto = new OrderRequestDto
             {
@@ -30,12 +32,13 @@ namespace Moonpig.PostOffice.Tests
                 OrderDate = DateTime.Now
             };
 
-            var date = controller.Get(new List<int>() {1}, DateTime.Now);
-            date.Date.Date.ShouldBe(DateTime.Now.Date.AddDays(1));
+            _responseDto = await _logic.GetDespatchDateAsync(_requestDto);
+
+            _responseDto.Date.Date.Should().Be(DateTime.Now.Date.AddDays(1));
         }
 
         [Fact]
-        public void OneProductWithLeadTimeOfTwoDay()
+        public async Task OneProductWithLeadTimeOfTwoDay()
         {
             _requestDto = new OrderRequestDto
             {
@@ -43,12 +46,13 @@ namespace Moonpig.PostOffice.Tests
                 OrderDate = DateTime.Now
             };
 
-            var date = controller.Get(new List<int>() { 2 }, DateTime.Now);
-            date.Date.Date.ShouldBe(DateTime.Now.Date.AddDays(2));
+            _responseDto = await _logic.GetDespatchDateAsync(_requestDto);
+
+            _responseDto.Date.Date.Should().Be(DateTime.Now.Date.AddDays(2));
         }
 
         [Fact]
-        public void OneProductWithLeadTimeOfThreeDay()
+        public async Task OneProductWithLeadTimeOfThreeDay()
         {
             _requestDto = new OrderRequestDto
             {
@@ -56,12 +60,13 @@ namespace Moonpig.PostOffice.Tests
                 OrderDate = DateTime.Now
             };
 
-            var date = controller.Get(new List<int>() { 3 }, DateTime.Now);
-            date.Date.Date.ShouldBe(DateTime.Now.Date.AddDays(3));
+            _responseDto = await _logic.GetDespatchDateAsync(_requestDto);
+
+            _responseDto.Date.Date.Should().Be(DateTime.Now.Date.AddDays(3));
         }
 
         [Fact]
-        public void SaturdayHasExtraTwoDays()
+        public async Task SaturdayHasExtraTwoDays()
         {
             _requestDto = new OrderRequestDto
             {
@@ -69,12 +74,13 @@ namespace Moonpig.PostOffice.Tests
                 OrderDate = new DateTime(2018, 1, 26)
             };
 
-            var date = controller.Get(new List<int>() { 1 }, new DateTime(2018,1,26));
-            date.Date.ShouldBe(new DateTime(2018, 1, 26).Date.AddDays(3));
+            _responseDto = await _logic.GetDespatchDateAsync(_requestDto);
+
+            _responseDto.Date.Should().Be(new DateTime(2018, 1, 26).Date.AddDays(3));
         }
 
         [Fact]
-        public void SundayHasExtraDay()
+        public async Task SundayHasExtraDay()
         {
             _requestDto = new OrderRequestDto
             {
@@ -82,8 +88,9 @@ namespace Moonpig.PostOffice.Tests
                 OrderDate = new DateTime(2018, 1, 25)
             };
 
-            var date = controller.Get(new List<int>() { 3 }, new DateTime(2018, 1, 25));
-            date.Date.ShouldBe(new DateTime(2018, 1, 25).Date.AddDays(4));
+            _responseDto = await _logic.GetDespatchDateAsync(_requestDto);
+
+            _responseDto.Date.Should().Be(new DateTime(2018, 1, 25).Date.AddDays(4));
         }
     }
 }
