@@ -26,71 +26,87 @@ namespace Moonpig.PostOffice.Tests
         [Fact]
         public async Task OneProductWithLeadTimeOfOneDay()
         {
+            // Given
             _requestDto = new OrderRequestDto
             {
-                ProductIds = new List<int>() { 1 },
-                OrderDate = DateTime.Now
+                ProductIds = new List<int> { 1 },
+                OrderDate = new DateTime(2018, 01, 01)
             };
-
+            _orderQueryMock.Setup(q => q.GetSupplierLeadTimeAsync(It.IsAny<int>())).ReturnsAsync(1);
+            
+            // When
             _responseDto = await _logic.GetDespatchDateAsync(_requestDto);
 
-            _responseDto.Date.Date.Should().Be(DateTime.Now.Date.AddDays(1));
+            //Then
+            _responseDto.Date.Date.Should().Be(_requestDto.OrderDate.AddDays(1));
         }
 
         [Fact]
         public async Task OneProductWithLeadTimeOfTwoDay()
         {
+            // Given
             _requestDto = new OrderRequestDto
             {
-                ProductIds = new List<int>() { 2 },
-                OrderDate = DateTime.Now
+                ProductIds = new List<int> { 2 },
+                OrderDate = new DateTime(2018, 01, 01)
             };
+            _orderQueryMock.Setup(q => q.GetSupplierLeadTimeAsync(It.IsAny<int>())).ReturnsAsync(2);
 
+            // When
             _responseDto = await _logic.GetDespatchDateAsync(_requestDto);
 
-            _responseDto.Date.Date.Should().Be(DateTime.Now.Date.AddDays(2));
+            _responseDto.Date.Date.Should().Be(_requestDto.OrderDate.AddDays(2));
         }
 
         [Fact]
         public async Task OneProductWithLeadTimeOfThreeDay()
         {
+            // Given
             _requestDto = new OrderRequestDto
             {
-                ProductIds = new List<int>() { 3 },
-                OrderDate = DateTime.Now
+                ProductIds = new List<int> { 3 },
+                OrderDate = new DateTime(2018, 01, 01)
             };
+            _orderQueryMock.Setup(q => q.GetSupplierLeadTimeAsync(It.IsAny<int>())).ReturnsAsync(3);
 
+            // When
             _responseDto = await _logic.GetDespatchDateAsync(_requestDto);
 
-            _responseDto.Date.Date.Should().Be(DateTime.Now.Date.AddDays(3));
+            _responseDto.Date.Date.Should().Be(_requestDto.OrderDate.AddDays(3));
         }
 
         [Fact]
         public async Task SaturdayHasExtraTwoDays()
         {
+            // Given
             _requestDto = new OrderRequestDto
             {
-                ProductIds = new List<int>() { 1 },
+                ProductIds = new List<int> { 1 },
                 OrderDate = new DateTime(2018, 1, 26)
             };
+            _orderQueryMock.Setup(q => q.GetSupplierLeadTimeAsync(It.IsAny<int>())).ReturnsAsync(1);
 
+            // When
             _responseDto = await _logic.GetDespatchDateAsync(_requestDto);
 
-            _responseDto.Date.Should().Be(new DateTime(2018, 1, 26).Date.AddDays(3));
+            _responseDto.Date.Should().Be(_requestDto.OrderDate.AddDays(3));
         }
 
         [Fact]
         public async Task SundayHasExtraDay()
         {
+            // Given
             _requestDto = new OrderRequestDto
             {
-                ProductIds = new List<int>() { 3 },
+                ProductIds = new List<int> { 3 },
                 OrderDate = new DateTime(2018, 1, 25)
             };
+            _orderQueryMock.Setup(q => q.GetSupplierLeadTimeAsync(It.IsAny<int>())).ReturnsAsync(3);
 
+            // When
             _responseDto = await _logic.GetDespatchDateAsync(_requestDto);
 
-            _responseDto.Date.Should().Be(new DateTime(2018, 1, 25).Date.AddDays(4));
+            _responseDto.Date.Should().Be(_requestDto.OrderDate.AddDays(4));
         }
     }
 }
