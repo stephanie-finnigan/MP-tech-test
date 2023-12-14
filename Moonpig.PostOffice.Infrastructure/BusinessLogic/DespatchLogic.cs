@@ -20,21 +20,18 @@ namespace Moonpig.PostOffice.Infrastructure.BusinessLogic
         public async Task<OrderResponseDto> GetDespatchDateAsync(OrderRequestDto request)
         {
             var _mlt = request.OrderDate; // max lead time
-            
-            foreach (var id in request.ProductIds)
-            {
-                var lt = await _orderQuery.GetSupplierLeadTimeAsync(id);
 
-                if (request.OrderDate.AddDays(lt) > _mlt)
-                    _mlt = request.OrderDate.AddDays(lt);
-            }
+            var lt = await _orderQuery.GetSupplierLeadTimeAsync(request.ProductIds);
 
-            var mltResult = GetMltDate(_mlt);
+            if (request.OrderDate.AddDays(lt) > _mlt)
+                _mlt = request.OrderDate.AddDays(lt);
 
-            return new OrderResponseDto { Date = mltResult };
+            var despatchDate = GetDate(_mlt);
+
+            return new OrderResponseDto { Date = despatchDate };
         }
 
-        private static DateTime GetMltDate(DateTime mlt)
+        private static DateTime GetDate(DateTime mlt)
         {
             return mlt.DayOfWeek switch
             {
