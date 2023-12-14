@@ -1,5 +1,6 @@
 ﻿using Moonpig.PostOffice.Infrastructure.BusinessLogic;
 using Moonpig.PostOffice.Infrastructure.DataAccess;
+using Moonpig.PostOffice.Model.Dto;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,8 @@ namespace Moonpig.PostOffice.Tests
     {
         private readonly Mock<IOrderQuery> _orderQueryMock;
         private readonly DespatchLogic _logic;
+        private OrderRequestDto _requestDto;
+        private OrderResponseDto _responseDto;
 
         public PostOfficeTests()
         {
