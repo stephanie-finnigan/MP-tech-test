@@ -24,7 +24,12 @@ namespace Moonpig.PostOffice.Tests
         [Fact]
         public void OneProductWithLeadTimeOfOneDay()
         {
-            DespatchDateController controller = new DespatchDateController();
+            _requestDto = new OrderRequestDto
+            {
+                ProductIds = new List<int>() { 1 },
+                OrderDate = DateTime.Now
+            };
+
             var date = controller.Get(new List<int>() {1}, DateTime.Now);
             date.Date.Date.ShouldBe(DateTime.Now.Date.AddDays(1));
         }
@@ -32,7 +37,12 @@ namespace Moonpig.PostOffice.Tests
         [Fact]
         public void OneProductWithLeadTimeOfTwoDay()
         {
-            DespatchDateController controller = new DespatchDateController();
+            _requestDto = new OrderRequestDto
+            {
+                ProductIds = new List<int>() { 2 },
+                OrderDate = DateTime.Now
+            };
+
             var date = controller.Get(new List<int>() { 2 }, DateTime.Now);
             date.Date.Date.ShouldBe(DateTime.Now.Date.AddDays(2));
         }
@@ -40,7 +50,12 @@ namespace Moonpig.PostOffice.Tests
         [Fact]
         public void OneProductWithLeadTimeOfThreeDay()
         {
-            DespatchDateController controller = new DespatchDateController();
+            _requestDto = new OrderRequestDto
+            {
+                ProductIds = new List<int>() { 3 },
+                OrderDate = DateTime.Now
+            };
+
             var date = controller.Get(new List<int>() { 3 }, DateTime.Now);
             date.Date.Date.ShouldBe(DateTime.Now.Date.AddDays(3));
         }
@@ -48,7 +63,12 @@ namespace Moonpig.PostOffice.Tests
         [Fact]
         public void SaturdayHasExtraTwoDays()
         {
-            DespatchDateController controller = new DespatchDateController();
+            _requestDto = new OrderRequestDto
+            {
+                ProductIds = new List<int>() { 1 },
+                OrderDate = new DateTime(2018, 1, 26)
+            };
+
             var date = controller.Get(new List<int>() { 1 }, new DateTime(2018,1,26));
             date.Date.ShouldBe(new DateTime(2018, 1, 26).Date.AddDays(3));
         }
@@ -56,7 +76,12 @@ namespace Moonpig.PostOffice.Tests
         [Fact]
         public void SundayHasExtraDay()
         {
-            DespatchDateController controller = new DespatchDateController();
+            _requestDto = new OrderRequestDto
+            {
+                ProductIds = new List<int>() { 3 },
+                OrderDate = new DateTime(2018, 1, 25)
+            };
+
             var date = controller.Get(new List<int>() { 3 }, new DateTime(2018, 1, 25));
             date.Date.ShouldBe(new DateTime(2018, 1, 25).Date.AddDays(4));
         }
