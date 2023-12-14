@@ -1,11 +1,9 @@
-﻿namespace Moonpig.PostOffice.Tests
-{
-    using System;
-    using System.Collections.Generic;
-    using Api.Controllers;
-    using Shouldly;
-    using Xunit;
+﻿using System;
+using System.Collections.Generic;
+using Xunit;
 
+namespace Moonpig.PostOffice.Tests
+{
     public class PostOfficeTests
     {
         [Fact]
