@@ -32,7 +32,7 @@ namespace Moonpig.PostOffice.Tests
                 ProductIds = new List<int> { 1 },
                 OrderDate = new DateTime(2018, 01, 01)
             };
-            _orderQueryMock.Setup(q => q.GetSupplierLeadTimeAsync(It.IsAny<int>())).ReturnsAsync(1);
+            _orderQueryMock.Setup(q => q.GetSupplierLeadTimeAsync(It.IsAny<List<int>>())).ReturnsAsync(1);
             
             // When
             _responseDto = await _logic.GetDespatchDateAsync(_requestDto);
@@ -50,7 +50,7 @@ namespace Moonpig.PostOffice.Tests
                 ProductIds = new List<int> { 2 },
                 OrderDate = new DateTime(2018, 01, 01)
             };
-            _orderQueryMock.Setup(q => q.GetSupplierLeadTimeAsync(It.IsAny<int>())).ReturnsAsync(2);
+            _orderQueryMock.Setup(q => q.GetSupplierLeadTimeAsync(It.IsAny<List<int>>())).ReturnsAsync(2);
 
             // When
             _responseDto = await _logic.GetDespatchDateAsync(_requestDto);
@@ -67,7 +67,7 @@ namespace Moonpig.PostOffice.Tests
                 ProductIds = new List<int> { 3 },
                 OrderDate = new DateTime(2018, 01, 01)
             };
-            _orderQueryMock.Setup(q => q.GetSupplierLeadTimeAsync(It.IsAny<int>())).ReturnsAsync(3);
+            _orderQueryMock.Setup(q => q.GetSupplierLeadTimeAsync(It.IsAny<List<int>>())).ReturnsAsync(3);
 
             // When
             _responseDto = await _logic.GetDespatchDateAsync(_requestDto);
@@ -84,7 +84,7 @@ namespace Moonpig.PostOffice.Tests
                 ProductIds = new List<int> { 1 },
                 OrderDate = new DateTime(2018, 1, 26)
             };
-            _orderQueryMock.Setup(q => q.GetSupplierLeadTimeAsync(It.IsAny<int>())).ReturnsAsync(1);
+            _orderQueryMock.Setup(q => q.GetSupplierLeadTimeAsync(It.IsAny<List<int>>())).ReturnsAsync(1);
 
             // When
             _responseDto = await _logic.GetDespatchDateAsync(_requestDto);
@@ -101,12 +101,72 @@ namespace Moonpig.PostOffice.Tests
                 ProductIds = new List<int> { 3 },
                 OrderDate = new DateTime(2018, 1, 25)
             };
-            _orderQueryMock.Setup(q => q.GetSupplierLeadTimeAsync(It.IsAny<int>())).ReturnsAsync(3);
+            _orderQueryMock.Setup(q => q.GetSupplierLeadTimeAsync(It.IsAny<List<int>>())).ReturnsAsync(3);
 
             // When
             _responseDto = await _logic.GetDespatchDateAsync(_requestDto);
 
+            // Then
             _responseDto.Date.Should().Be(_requestDto.OrderDate.AddDays(4));
+        }
+
+        [Fact]
+        public async Task TwoProductsWithLeadTimeOfThreeDaysTotal()
+        {
+            // Given
+            _requestDto = new OrderRequestDto
+            {
+                ProductIds = new List<int> { 2, 4 },
+                OrderDate = new DateTime(2018, 01, 01)
+            };
+            _orderQueryMock.Setup(q => q.GetSupplierLeadTimeAsync(It.IsAny<List<int>>())).ReturnsAsync(2);
+
+            // When
+            _responseDto = await _logic.GetDespatchDateAsync(_requestDto);
+
+            // Then
+            _responseDto.Date.Should().Be(_requestDto.OrderDate.AddDays(2));
+        }
+
+        [Theory]
+        [InlineData("2018-01-05", "2018-01-08")]
+        [InlineData("2018-01-06", "2018-01-09")]
+        [InlineData("2018-01-07", "2018-01-09")]
+        public async Task LeadTimeNotCountedOverWeekend(DateTime orderDate, DateTime expOrderDate)
+        {
+            // Given
+            _requestDto = new OrderRequestDto
+            {
+                ProductIds = new List<int> { 1 },
+                OrderDate = orderDate
+            };
+            _orderQueryMock.Setup(q => q.GetSupplierLeadTimeAsync(It.IsAny<List<int>>())).ReturnsAsync(1);
+
+            // When
+            _responseDto = await _logic.GetDespatchDateAsync(_requestDto);
+
+            // Then
+            _responseDto.Date.Should().Be(expOrderDate);
+        }
+
+        [Theory]
+        [InlineData(9, "2018-01-05", "2018-01-15")]
+        [InlineData(10, "2018-01-05", "2018-01-22")]
+        public async Task LeadTimeOverMultipleWeeks(int productId, DateTime orderDate, DateTime expOrderDate)
+        {
+            // Given
+            _requestDto = new OrderRequestDto
+            {
+                ProductIds = new List<int> { productId },
+                OrderDate = orderDate
+            };
+            _orderQueryMock.Setup(q => q.GetSupplierLeadTimeAsync(It.IsAny<List<int>>())).ReturnsAsync(1);
+
+            // When
+            _responseDto = await _logic.GetDespatchDateAsync(_requestDto);
+
+            // Then
+            _responseDto.Date.Should().Be(expOrderDate);
         }
     }
 }
