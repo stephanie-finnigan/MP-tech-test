@@ -7,7 +7,7 @@ namespace Moonpig.PostOffice.Infrastructure.DataAccess
 {
     public interface IOrderQuery
     {
-        Task<int> GetSupplierLeadTimeAsync(int productId);
+        Task<int> GetSupplierLeadTimeAsync(List<int> ids);
     }
 
     public class OrderQuery : IOrderQuery
@@ -19,18 +19,20 @@ namespace Moonpig.PostOffice.Infrastructure.DataAccess
             _dbContext = dbContext;
         }
 
-        public Task<int> GetSupplierLeadTimeAsync(int productId)
+        public Task<int> GetSupplierLeadTimeAsync(List<int> ids)
         {
             var query = (from p in _dbContext.Products
                          join s in _dbContext.Suppliers
                              on p.SupplierId equals s.SupplierId
-                         where p.ProductId == productId
+                         where ids.Contains(p.ProductId)
                          select new
                          {
                              s.LeadTime
-                         }).SingleOrDefault();
+                         }).ToList();
 
-            return Task.FromResult(query.LeadTime);
+            var lt = query.Max(q => q.LeadTime);
+
+            return Task.FromResult(lt);
         }
     }
 }
