@@ -39,15 +39,20 @@ namespace Moonpig.PostOffice.Data
                     new Supplier
                     {
                         SupplierId = 5,
-                        Name = "Disney",
+                        Name = "Disney Store",
                         LeadTime = 6
-                    }
-                    ,
+                    },
                     new Supplier
                     {
                         SupplierId = 6,
-                        Name = "Tacky T-Shrts",
-                        LeadTime = 13
+                        Name = "Tacky T-Shirts",
+                        LeadTime = 11
+                    },
+                    new Supplier
+                    {
+                        SupplierId = 7,
+                        Name = "Film & TV Shop",
+                        LeadTime = 4
                     }
                 }.AsQueryable();
             }
@@ -69,6 +74,7 @@ namespace Moonpig.PostOffice.Data
                     new Product { ProductId = 8, Name = "Box Set", SupplierId = 7 },
                     new Product { ProductId = 9, Name = "Frozen Doll", SupplierId = 5 },
                     new Product { ProductId = 10, Name = "Personalised Tacky Thshrt", SupplierId = 6 },
+                    new Product { ProductId = 11, Name = "Gin", SupplierId = 3 },
                 }.AsQueryable();
             }
         }
