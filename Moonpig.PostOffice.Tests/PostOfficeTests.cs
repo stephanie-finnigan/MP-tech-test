@@ -10,10 +10,12 @@ namespace Moonpig.PostOffice.Tests
     public class PostOfficeTests
     {
         private readonly Mock<IOrderQuery> _orderQueryMock;
+        private readonly DespatchLogic _logic;
 
         public PostOfficeTests()
         {
             _orderQueryMock = new Mock<IOrderQuery>();
+            _logic = new DespatchLogic(_orderQueryMock.Object);
         }
 
         [Fact]
