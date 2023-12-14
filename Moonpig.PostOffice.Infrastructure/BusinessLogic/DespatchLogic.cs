@@ -23,15 +23,15 @@ namespace Moonpig.PostOffice.Infrastructure.BusinessLogic
             
             foreach (var id in request.ProductIds)
             {
-                var lt = await _orderQuery.GetOrderSupplierLeadTime(id);
+                var lt = await _orderQuery.GetSupplierLeadTimeAsync(id);
 
                 if (request.OrderDate.AddDays(lt) > _mlt)
                     _mlt = request.OrderDate.AddDays(lt);
             }
 
-            var result = GetMltDate(_mlt);
+            var mltResult = GetMltDate(_mlt);
 
-            return new OrderResponseDto { Date = result };
+            return new OrderResponseDto { Date = mltResult };
         }
 
         private static DateTime GetMltDate(DateTime mlt)
