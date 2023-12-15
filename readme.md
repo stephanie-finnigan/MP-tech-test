@@ -107,7 +107,7 @@ Q1. What 'code smells' / anti-patterns did you find in the existing
 Q2. What best practices have you used while implementing your solution?
 	- Single Responsibility
 	- Interface Segregation
-	- Dependency Injection 
+	- Dependency Injection/Inversion 
 
 Q3. What further steps would you take to improve the solution given more time?
 	- Implement a full EntityFramework DbContext.
@@ -116,6 +116,10 @@ Q3. What further steps would you take to improve the solution given more time?
 
 Q4. What's a technology that you're excited about and where do you see this 
     being applicable? (Your answer does not have to be related to this problem)
+	- React as I am learning this technology at the moment. After learning and 
+	using Angular for some time now, I wanted to take on a new challenge for 
+	frontend development. This technology is applicable within the Moonpig Group 
+	along with growing popularity in many other organisations.
 
 ## Request and Response Examples
 
