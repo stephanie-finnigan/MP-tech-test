@@ -109,9 +109,12 @@ Q1. What 'code smells' / anti-patterns did you find in the existing
 
 Q2. What best practices have you used while implementing your solution?
 
-	- Single Responsibility
-	- Interface Segregation
-	- Dependency Injection/Inversion 
+	- Single Responsibility Principle
+	- Interface Segregation Principle
+	- Dependency Injection/Inversion Principles
+	- Seperate service logic implementation from Controller endpoint.
+	- Add more unit tests based on acceptance criteria for further test coverage.
+	- Usage of short-circuit evaluation for performance
 
 Q3. What further steps would you take to improve the solution given more time?
 
@@ -127,6 +130,9 @@ Q4. What's a technology that you're excited about and where do you see this
 	using Angular for some time now, I wanted to take on a new challenge for 
 	frontend development. This technology is applicable within the Moonpig Group 
 	along with growing popularity in many other organisations.
+	- I've also never used the XUnit framework before. This has also been a 
+	learning experience for me and another technology I intend to add to my 
+	growing bank of knowledge.
 
 ## Request and Response Examples
 
