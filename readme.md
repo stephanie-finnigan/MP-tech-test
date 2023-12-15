@@ -106,13 +106,11 @@ Q1. What 'code smells' / anti-patterns did you find in the existing
 	- No service layer with interfaces implemented
 	- No need to test controller as tests will be run on Service logic
 	- Pascal case used for local variable
-	- Duplicate linq queries used when one is sufficient
+	- Two linq queries used when one is sufficient
 
 Q2. What best practices have you used while implementing your solution?
 
-	- Single Responsibility Principle
-	- Interface Segregation Principle
-	- Dependency Inversion Principle
+	- SOLID Principles
 	- Dependency Injection (Loose coupling)
 	- Seperate service logic implementation from Controller endpoint
 	- Add more unit tests based on acceptance criteria for further test coverage
