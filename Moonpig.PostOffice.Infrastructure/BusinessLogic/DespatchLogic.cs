@@ -24,7 +24,9 @@ namespace Moonpig.PostOffice.Infrastructure.BusinessLogic
             var lt = await _orderQuery.GetSupplierLeadTimeAsync(request.ProductIds);
 
             if (_mlt.AddDays(lt) > _mlt)
+            {
                 _mlt = _mlt.AddDays(lt);
+            }  
 
             _mlt = CalculateDespatch(_mlt);
             
