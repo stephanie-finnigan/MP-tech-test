@@ -100,12 +100,13 @@ document.
 Q1. What 'code smells' / anti-patterns did you find in the existing 
 	implementation of part 1 & 2?
 
-	- Logic implementation sitting in the controller.
-	- Using statements sitting within namespace of classes.
-	- No dependency injection implemented.
-	- No service layer with interfaces implemented.
-	- No need to test controller as tests will be run on Service logic.
+	- Logic implementation sitting in the controller
+	- Curly braces not used with if/else statements
+	- No dependency injection implemented
+	- No service layer with interfaces implemented
+	- No need to test controller as tests will be run on Service logic
 	- Pascal case used for local variable
+	- Duplicate linq queries used when one is sufficient
 
 Q2. What best practices have you used while implementing your solution?
 
@@ -113,16 +114,17 @@ Q2. What best practices have you used while implementing your solution?
 	- Interface Segregation Principle
 	- Dependency Inversion Principle
 	- Dependency Injection (Loose coupling)
-	- Seperate service logic implementation from Controller endpoint.
-	- Add more unit tests based on acceptance criteria for further test coverage.
+	- Seperate service logic implementation from Controller endpoint
+	- Add more unit tests based on acceptance criteria for further test coverage
 	- Usage of short-circuit evaluation for performance
+	- Add Swagger for full end-2-end test coverage
 
 Q3. What further steps would you take to improve the solution given more time?
 
-	- Implement a full EntityFramework DbContext.
-	- Add an Order & Order_Item entities/tables to the context.
-	- Add more test coverage for orders with more than 1 product.
-	- Add error/exception handling to logic & data access classes.
+	- Implement a full EntityFramework DbContext
+	- Add an Order & Order_Item entities/tables to the context
+	- Add more test coverage for orders with more than 1 product
+	- Add error/exception handling to logic & data access classes
 
 Q4. What's a technology that you're excited about and where do you see this 
     being applicable? (Your answer does not have to be related to this problem)
