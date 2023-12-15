@@ -116,8 +116,9 @@ Q2. What best practices have you used while implementing your solution?
 Q3. What further steps would you take to improve the solution given more time?
 
 	- Implement a full EntityFramework DbContext.
-	- Add an Order & Order_Item entities/tables to the context
+	- Add an Order & Order_Item entities/tables to the context.
 	- Add more test coverage for orders with more than 1 product.
+	- Add error/exception handling to logic & data access classes.
 
 Q4. What's a technology that you're excited about and where do you see this 
     being applicable? (Your answer does not have to be related to this problem)
