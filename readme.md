@@ -111,7 +111,8 @@ Q2. What best practices have you used while implementing your solution?
 
 	- Single Responsibility Principle
 	- Interface Segregation Principle
-	- Dependency Injection/Inversion Principles
+	- Dependency Inversion Principle
+	- Dependency Injection (Loose coupling)
 	- Seperate service logic implementation from Controller endpoint.
 	- Add more unit tests based on acceptance criteria for further test coverage.
 	- Usage of short-circuit evaluation for performance
