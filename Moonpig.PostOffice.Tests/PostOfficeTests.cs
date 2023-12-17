@@ -55,6 +55,7 @@ namespace Moonpig.PostOffice.Tests
             // When
             _responseDto = await _logic.GetDespatchDateAsync(_requestDto);
 
+            // Then
             _responseDto.Date.Date.Should().Be(_requestDto.OrderDate.AddDays(2));
         }
 
@@ -72,6 +73,7 @@ namespace Moonpig.PostOffice.Tests
             // When
             _responseDto = await _logic.GetDespatchDateAsync(_requestDto);
 
+            // Then
             _responseDto.Date.Date.Should().Be(_requestDto.OrderDate.AddDays(3));
         }
 
@@ -89,6 +91,7 @@ namespace Moonpig.PostOffice.Tests
             // When
             _responseDto = await _logic.GetDespatchDateAsync(_requestDto);
 
+            // Then
             _responseDto.Date.Should().Be(_requestDto.OrderDate.AddDays(3));
         }
 
@@ -107,7 +110,7 @@ namespace Moonpig.PostOffice.Tests
             _responseDto = await _logic.GetDespatchDateAsync(_requestDto);
 
             // Then
-            _responseDto.Date.Should().Be(_requestDto.OrderDate.AddDays(4));
+            _responseDto.Date.Should().Be(_requestDto.OrderDate.AddDays(5));
         }
 
         [Fact]
