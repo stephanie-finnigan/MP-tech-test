@@ -23,32 +23,28 @@ namespace Moonpig.PostOffice.Infrastructure.BusinessLogic
 
             var lt = await _orderQuery.GetSupplierLeadTimeAsync(request.ProductIds);
 
-            if (_mlt.AddDays(lt) > _mlt)
-            {
-                _mlt = _mlt.AddDays(lt);
-            }  
-
-            _mlt = CalculateDespatch(_mlt);
+            var date = CalculateDespatchDate(_mlt, lt);
             
-            return new OrderResponseDto { Date = _mlt };
+            return new OrderResponseDto { Date = date };
         }
 
-        private static DateTime CalculateDespatch(DateTime date)
+        private static DateTime CalculateDespatchDate(DateTime orderDate, int leadTime)
         {
-            while (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
+            var d = orderDate;
+            for (var i = 0; i < leadTime; i++)
             {
-                date = date.AddDays(1);
+                while (d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    d = d.AddDays(1);
+                }
+                d = d.AddDays(1);
             }
 
-            return date;
-
-            //return date.DayOfWeek switch
-            //{
-            //    DayOfWeek.Friday => date.AddDays(3),
-            //    DayOfWeek.Saturday => date.AddDays(2),
-            //    DayOfWeek.Sunday => date.AddDays(1),
-            //    _ => date
-            //};
+            while (d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday)
+            {
+                d = d.AddDays(1);
+            }
+            return d;
         }
     }
 }
