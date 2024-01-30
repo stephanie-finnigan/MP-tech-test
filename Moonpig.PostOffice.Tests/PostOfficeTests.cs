@@ -24,6 +24,43 @@ namespace Moonpig.PostOffice.Tests
         }
 
         [Fact]
+        public async Task OneProductWithLeadTimeOfOneDayWithBusinessHours()
+        {
+            // Given
+            _requestDto = new OrderRequestDto
+            {
+                ProductIds = new List<int> { 1 },
+                OrderDate = new DateTime(2018, 01, 01, 18, 00, 00)
+            };
+            _orderQueryMock.Setup(q => q.GetSupplierLeadTimeAsync(It.IsAny<List<int>>())).ReturnsAsync(1);
+
+            //When 
+            _responseDto = await _logic.GetDespatchDateAsync(_requestDto);
+
+            // Then
+            _responseDto.Date.Date.Should().Be(_requestDto.OrderDate.Date.AddDays(2));
+        }
+
+        [Fact]
+        public async Task OneProductWithLeadTimeOfOneDayWithBusinessHoursExceptWeekends()
+        {
+            // Given
+            _requestDto = new OrderRequestDto
+            {
+                ProductIds = new List<int> { 1 },
+                OrderDate = new DateTime(2018, 01, 27, 18, 00, 00)
+            };
+            _orderQueryMock.Setup(q => q.GetSupplierLeadTimeAsync(It.IsAny<List<int>>())).ReturnsAsync(1);
+
+            //When 
+            _responseDto = await _logic.GetDespatchDateAsync(_requestDto);
+
+            // Then
+            //_responseDto.Date.Date.Should().Be(_requestDto.OrderDate.Date.AddDays(3));
+            _responseDto.Date.Date.Should().Be(new DateTime(2018, 01, 30));
+        }
+
+        [Fact]
         public async Task OneProductWithLeadTimeOfOneDay()
         {
             // Given

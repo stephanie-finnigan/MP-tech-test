@@ -19,7 +19,9 @@ namespace Moonpig.PostOffice.Infrastructure.BusinessLogic
 
         public async Task<OrderResponseDto> GetDespatchDateAsync(OrderRequestDto request)
         {
+
             var _mlt = request.OrderDate; // max lead time
+
 
             var lt = await _orderQuery.GetSupplierLeadTimeAsync(request.ProductIds);
 
@@ -31,6 +33,13 @@ namespace Moonpig.PostOffice.Infrastructure.BusinessLogic
         private static DateTime CalculateDespatchDate(DateTime orderDate, int leadTime)
         {
             var d = orderDate;
+
+            if (d.TimeOfDay > new TimeSpan(17, 30, 00) || 
+                (d.DayOfWeek != DayOfWeek.Saturday || d.DayOfWeek != DayOfWeek.Sunday))
+            {
+                d = d.AddDays(1);
+            }
+
             for (var i = 0; i < leadTime; i++)
             {
                 while (d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday)
